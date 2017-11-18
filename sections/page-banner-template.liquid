@@ -1,0 +1,58 @@
+{% if section.settings.image %}
+  <header class="banner center page_banner dark-overlay-{{section.settings.image_darken}}">
+    <img  src="{{ section.settings.image | img_url: '100x' }}"
+          alt="{% if section.settings.image.alt != blank %}{{ section.settings.image.alt }}{% else %}{{ page.title | escape }}{% endif %}"
+          data-src="{{ section.settings.image | img_url: '1400x', format: 'pjpg' }}"
+          class="lazyload {{ settings.image_loading_style }}"
+          sizes="100vw"
+          srcset="{{ section.settings.image | img_url: '480x', format: 'pjpg' }} 480w,
+                  {{ section.settings.image | img_url: '765x', format: 'pjpg' }} 765w,
+                  {{ section.settings.image | img_url: '1400x', format: 'pjpg' }} 1400w,
+                  {{ section.settings.image | img_url: '2048x', format: 'pjpg' }} 2048w"
+           />
+    <div class="caption">
+      <h1 class="headline">{{ page.title }}</h1>
+    </div>
+  </header>
+{% endif %}
+
+<a name="pagecontent" id="pagecontent"></a>
+
+<div class="container main content">
+  <div class="sixteen columns page clearfix">
+
+  {% if section.settings.image == nil %}
+    <h1>
+      {{ page.title }}
+    </h1>
+    <div class="feature_divider"></div>
+  {% endif %}
+
+    <div>
+      {% include 'page-multi-column', content: page.content %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+
+{
+  "name": "Banner",
+  "class": "banner-template-section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Banner image",
+      "info": "1600 x 600px recommended"
+    },
+    {
+      "type": "checkbox",
+      "id": "image_darken",
+      "label": "Darken banner image",
+      "default": false
+    }
+  ]
+}
+
+{% endschema %}

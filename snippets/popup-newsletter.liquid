@@ -1,0 +1,15 @@
+<span class="remodal newsletter-popup {% if settings.newsletter_bg != nil %}newsletter-image--true {% else %} newsletter-image--false{% endif %} align-{{settings.newsletter_popup_image_align}} {% if settings.display_first_name and settings.display_last_name %}newsletter-both-names--true {% else %}newsletter-both-names--false {% endif %}" data-remodal-id="newsletter" data-remodal-options="hashTracking: false">
+	<a data-remodal-action="close" class="remodal-close"></a>
+	{% if settings.newsletter_bg != nil %}
+		<div class="newsletter-img">
+			<img src="{{ settings.newsletter_bg | img_url: '600x' }}" alt="{% if settings.newsletter_bg.alt != blank %}{{ settings.newsletter_bg.alt }}{% else %}{{ settings.newsletter_popup_title | escape }}{% endif %}" class="lazyload {{ settings.image_loading_style }}" />
+		</div>
+	{% endif %}
+	<div class="newsletter-info">
+		<div class="newsletter-description">
+			<h2>{{ settings.newsletter_popup_title }}</h2>
+			<div>{{ settings.newsletter_popup_text }}</div>
+			{% include 'newsletter-form' %}
+		</div>
+	</div>
+</span>

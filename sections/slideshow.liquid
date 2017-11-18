@@ -1,0 +1,304 @@
+{% assign default = '1400x' %}
+{% assign size1 = '480x' %}
+{% assign size2 = '765x' %}
+{% assign size3 = '900x' %}
+{% assign size4 = '1000x' %}
+{% assign size5 = '1100x' %}
+{% assign size6 = '1300x' %}
+{% assign size7 = '1500x' %}
+{% assign size8 = '1700x' %}
+{% assign size9 = '1900x' %}
+{% assign size10 = '2000x' %}
+
+{% if section.blocks.size > 0 %}
+  <div  id="homepage_slider-{{section.id}}"
+        class="homepage-slideshow js-homepage-slideshow slideshow_animation--{{ section.settings.slideshow_animation }} {% if section.settings.slideshow_text_animation != '' %}text-animation--true{% endif %}"
+        data-slider-id="homepage_slider-{{section.id}}"
+        data-slideshow-speed="{{section.settings.slideshow_speed}}"
+        data-slideshow-text-animation="{{section.settings.slideshow_text_animation}}"
+        >
+    {% for block in section.blocks %}
+        <div class="gallery-cell slide-{{ forloop.index }}" {{ block.shopify_attributes }} data-block-id="{{block.id}}">
+        {% if block.settings.image != nil %}
+          <img  src="{{ block.settings.image | img_url: '100x', format: 'pjpg' }}"
+                alt="{{ block.settings.image.alt | escape }}"
+                class="lazyload {{ settings.image_loading_style }}"
+                sizes="100vw"
+                data-src="{{ block.settings.image | img_url: default, format: 'pjpg' }}"
+                srcset="
+                {{ block.settings.image | img_url: default, format: 'pjpg' }} {{default | replace: 'x', 'w'}},
+                {{ block.settings.image | img_url: size1, format: 'pjpg' }} {{size1 | replace: 'x', 'w'}},
+                {{ block.settings.image | img_url: size2, format: 'pjpg' }} {{size2 | replace: 'x', 'w'}},
+                {{ block.settings.image | img_url: size3, format: 'pjpg' }} {{size3 | replace: 'x', 'w'}},
+                {{ block.settings.image | img_url: size4, format: 'pjpg' }} {{size4 | replace: 'x', 'w'}},
+                {{ block.settings.image | img_url: size5, format: 'pjpg' }} {{size5 | replace: 'x', 'w'}},
+                {{ block.settings.image | img_url: size6, format: 'pjpg' }} {{size6 | replace: 'x', 'w'}},
+                {{ block.settings.image | img_url: size7, format: 'pjpg' }} {{size7 | replace: 'x', 'w'}},
+                {{ block.settings.image | img_url: size8, format: 'pjpg' }} {{size8 | replace: 'x', 'w'}},
+                {{ block.settings.image | img_url: size9, format: 'pjpg' }} {{size9 | replace: 'x', 'w'}},
+                {{ block.settings.image | img_url: size10, format: 'pjpg' }} {{size10 | replace: 'x', 'w'}}"
+                 />
+        {% else %}
+          {% capture i %}{% cycle "1", "2" %}{% endcapture %}
+          {{ 'lifestyle-' | append: i | placeholder_svg_tag: 'placeholder-svg placeholder-svg--slideshow' }}
+        {% endif %}
+          {% unless block.settings.button1_link != blank and block.settings.button2_link != blank %}
+            {% if block.settings.button1_link != blank %}
+              <a href="{{ block.settings.button1_link }}" class="banner-full-link">
+                {{ block.settings.title }}
+              </a>
+            {% elsif block.settings.button2_link != blank %}
+              <a href="{{ block.settings.button2_link }}" class="banner-full-link">
+                {{ block.settings.title }}
+              </a>
+            {% endif %}
+          {% endunless %}
+          {% if block.settings.pretext != blank or block.settings.title != blank or block.settings.subtitle != blank or block.settings.button1 != blank or block.settings.button2 != blank %}
+            <div class="caption position-{{block.settings.text_position}} js-caption">
+                <div class="caption-content
+                            caption-background-{{block.settings.caption_background}}
+                            caption-transparency-{{ block.settings.caption_background_transparency }}
+                            align-{{block.settings.text_align}}">
+                    <div class="pretext">
+                      {{ block.settings.pretext }}
+                    </div>
+                    <p class="headline">
+                      {{ block.settings.title }}
+                    </p>
+                    <div class="subtitle">
+                      {{ block.settings.subtitle }}
+                    </div>
+                  {% if block.settings.button1 != blank %}
+                    <a {% if block.settings.button1_link != blank %}href="{{ block.settings.button1_link }}"{% endif %} class="action_button first_button highlight-{{block.settings.button1_highlight}}">
+                      {{ block.settings.button1 }}
+                    </a>
+                  {% endif %}
+                  {% if block.settings.button2 != blank %}
+                    <a {% if block.settings.button2_link != blank %}href="{{ block.settings.button2_link }}"{% endif %} class="action_button second_button highlight-{{block.settings.button2_highlight}}">
+                      {{ block.settings.button2 }}
+                    </a>
+                  {% endif %}
+                </div>
+              </div>
+          {% endif %}
+        </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+{% schema %}
+
+{
+  "name": "Slideshow",
+  "class": "slideshow-section under-menu",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "For best results, upload images that are around 1280px in width and under 600px in height. Try to keep your slideshow images the same size."
+    },
+    {
+      "type": "select",
+      "id": "slideshow_text_animation",
+      "label": "Text animation",
+      "options": [
+        {
+          "value": "",
+          "label": "None"
+        },
+        {
+          "value": "fadeIn",
+          "label": "Fade In"
+        },
+        {
+          "value": "fadeInUp",
+          "label": "Fade Up"
+        },
+        {
+          "value": "fadeInDown",
+          "label": "Fade Down"
+        }
+      ],
+      "default": "fadeInDown"
+    },
+    {
+      "type": "select",
+      "id": "slideshow_animation",
+      "label": "Gallery transition",
+      "options": [
+        {
+          "value": "slide",
+          "label": "Slide"
+        },
+        {
+          "value": "fade",
+          "label": "Fade"
+        }
+      ],
+      "default": "slide"
+    },
+    {
+      "type": "select",
+      "id": "slideshow_speed",
+      "label": "Slideshow speed",
+      "default": "6000",
+      "options": [
+        {
+          "value": "0",
+          "label": "None"
+        },
+        {
+          "value": "4000",
+          "label": "4 seconds"
+        },
+        {
+          "value": "6000",
+          "label": "6 seconds"
+        },
+        {
+          "value": "10000",
+          "label": "10 seconds"
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "1600 x 1000px recommended"
+        },
+        {
+          "type": "richtext",
+          "id": "pretext",
+          "label": "Preheading",
+          "default": "<p></p>"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Your headline"
+        },
+        {
+          "type": "richtext",
+          "id": "subtitle",
+          "label": "Subheading",
+          "default": "<p></p>"
+        },
+        {
+          "type": "select",
+          "id": "text_position",
+          "label": "Text position",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "select",
+          "id": "text_align",
+          "label": "Text alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "checkbox",
+          "id": "caption_background",
+          "label": "Display text background"
+        },
+        {
+          "type": "checkbox",
+          "id": "caption_background_transparency",
+          "label": "Enable text background transparency"
+        },
+        {
+          "type": "text",
+          "id": "button1",
+          "label": "First button label"
+        },
+        {
+          "type": "url",
+          "id": "button1_link",
+          "label": "First button link URL"
+        },
+        {
+          "type": "checkbox",
+          "id": "button1_highlight",
+          "label": "Highlight first button"
+        },
+        {
+          "type": "text",
+          "id": "button2",
+          "label": "Second button label"
+        },
+        {
+          "type": "url",
+          "id": "button2_link",
+          "label": "Second button link URL"
+        },
+        {
+          "type": "checkbox",
+          "id": "button2_highlight",
+          "label": "Highlight second button"
+        }
+      ]
+    }
+  ],
+  "presets": [{
+    "name": "Slideshow",
+    "category": "Image",
+    "settings": {
+    },
+    "blocks": [
+      {
+        "type": "image",
+        "settings": {
+          "image": "",
+          "title": "Turbo Shopify Theme",
+          "subtitle": "",
+          "text_align": "center"
+        }
+      },
+      {
+        "type": "image",
+          "settings": {
+          "image": "",
+          "title": "",
+          "subtitle": "",
+          "text_align": "center"
+        }
+      }
+    ]
+  }]
+}
+
+{% endschema %}

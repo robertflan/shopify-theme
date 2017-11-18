@@ -1,0 +1,195 @@
+<div class="container social-feeds-wrap">
+  <div class="section clearfix homepage_content">
+    {% for block in section.blocks %}
+      {% if block.type == 'instagram' %}
+
+        <div class="{% if forloop.length > 1 %}eight{% else %}sixteen{% endif %} columns" {{ block.shopify_attributes }}>
+          <h2 class="title insta {% if forloop.length == 1 %}center{% endif %}">
+            {% if settings.instagram_link != blank %}
+              <a href="{{ settings.instagram_link }}" target="_blank">
+            {% endif %}
+            {{ block.settings.instagram_title }}
+            {% if settings.instagram_link != blank %}
+              </a>
+            {% endif %}
+          </h2>
+          {% if block.settings.instagram_title != blank %}
+            <div class="feature_divider"></div>
+          {% endif %}
+
+          {% if block.settings.instagram_client_id != blank %}
+            <div id="instafeed" class="js-instafeed" data-client-id="{{ block.settings.instagram_client_id | strip }}" data-count="{{ block.settings.instagram_count }}"></div>
+          {% else %}
+            <div id="instafeed" class="clearfix placeholder-instagram">
+              {% for i in (1..block.settings.instagram_count) %}
+                <div class="four columns">
+                  <a href="#">
+                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg placeholder-svg--instagram' }}
+                  </a>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if block.type == 'twitter' %}
+        <div class="{% if forloop.length > 1 %}eight{% else %}sixteen{% endif %} columns" {{ block.shopify_attributes }}>
+          <h2 class="title twitter {% if forloop.length == 1 %}center{% endif %}">
+            <a href="https://twitter.com/{{ block.settings.twitter_username | replace: "@", "" | strip }}" target="_blank">{{ block.settings.twitter_title }}</a>
+          </h2>
+          {% if block.settings.twitter_title != blank %}
+            <div class="feature_divider"></div>
+          {% endif %}
+
+          <a class="twitter-timeline" data-theme="{{ block.settings.twitter_theme }}" href="https://twitter.com/{{ block.settings.twitter_username | replace: "@", "" | strip }}" data-widget-id="319998048782647298" data-tweet-limit="{{ block.settings.tweet_count }}" data-screen-name="{{ block.settings.twitter_username | replace: "@", "" | strip }}" data-chrome="noheader nofooter noborders transparent" data-link-color="{{ settings.link_color }}" data-heading-style="color:{{ settings.link_color }};font-size:{{ settings.regular_font_size }}px;font-family: {{ settings.regular_font | replace: 'Google_', '' | replace: '+', ' ' | replace: '"', '' }}"></a>
+          <script defer>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Social feeds",
+  "class": "social-feeds-section",
+  "max_blocks": 2,
+  "blocks": [
+    {
+      "type": "twitter",
+      "name": "Twitter feed",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "twitter_username",
+          "label": "Twitter username"
+        },
+        {
+          "type": "text",
+          "id": "twitter_title",
+          "label": "Heading",
+          "default": "Tweets"
+        },
+        {
+          "type": "radio",
+          "id": "twitter_theme",
+          "label": "Twitter feed theme",
+          "default": "light",
+          "options": [
+            {
+              "value": "light",
+              "label": "Light"
+            },
+            {
+              "value": "dark",
+              "label": "Dark"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "tweet_count",
+          "label": "Number of tweets",
+          "options": [
+              {
+                "value": "1",
+                "label": "1"
+              },
+              {
+                "value": "2",
+                "label": "2"
+              },
+              {
+                "value": "3",
+                "label": "3"
+              },
+              {
+                "value": "4",
+                "label": "4"
+              },
+              {
+                "value": "5",
+                "label": "5"
+              },
+              {
+                "value": "6",
+                "label": "6"
+              }
+            ],
+          "default": "2"
+        }
+      ]
+    },
+    {
+      "type": "instagram",
+      "name": "Instagram feed",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "instagram_client_id",
+          "label": "Instagram Access Token ([?](http:\/\/outofthesandbox.com\/pages\/instagram-access-token))"
+        },
+        {
+          "type": "text",
+          "id": "instagram_title",
+          "label": "Heading",
+          "default": "Instagram"
+        },
+        {
+          "type": "select",
+          "id": "instagram_count",
+          "label": "Number of images",
+          "options": [
+              {
+                "value": "2",
+                "label": "2"
+              },
+              {
+                "value": "4",
+                "label": "4"
+              },
+              {
+                "value": "6",
+                "label": "6"
+              },
+              {
+                "value": "8",
+                "label": "8"
+              },
+              {
+                "value": "10",
+                "label": "10"
+              },
+              {
+                "value": "12",
+                "label": "12"
+              }
+          ],
+          "default": "6"
+        }
+      ]
+    }
+  ],
+  "presets": [{
+    "name": "Social feeds",
+    "category": "Social",
+    "blocks": [
+      {
+        "type": "twitter",
+        "settings": {
+          "twitter_title": "Tweets"
+        }
+      },
+      {
+        "type": "instagram",
+        "settings": {
+          "instagram_title": "Instagram"
+        }
+      }]
+    }]
+
+}
+{% endschema %}
